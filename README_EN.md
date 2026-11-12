@@ -3,22 +3,29 @@
 > **Wirelessly connect HB Coffee Roasters to Artisan Roasting Scope over Wi-Fi (macOS Native Menu Bar App)**  
 > Comprehensive support for HB Model S series (M2S / M6S / L2S / L6S) and HB Standard series.
 
-[English (Current)](README_EN.md) • [中文说明](README.md) • [Releases](https://github.com/koldllc/HB-Roaster-Wireless-Bridge/releases)
+[English (Current)](README_EN.md) • [中文说明 (README.md)](README.md) • [Windows Setup Guide](docs/WINDOWS_SETUP.md) • [Releases](https://github.com/koldllc/HB-Roaster-Wireless-Bridge/releases)
 
 ---
 
 Eliminate physical USB serial cables! 100% compatible with your existing Artisan curves, colors, 4-channel configuration, events, and alarms for an effortless, instant wireless roasting experience.
 
+## 🌟 Supported Platforms & Apps
+
+- 🍎 **macOS Native App** (`HB Roaster Wireless Bridge.app`): Swift & SwiftUI native menu bar application.
+- 🪟 **Windows Native App** (`HB-Roaster-Wireless-Bridge.exe`): Standalone Windows executable with dark dashboard, system tray residency, and zero-driver WebSocket connection. See [Windows Setup Guide](docs/WINDOWS_SETUP.md).
+
 ## 🌟 Key Features
 
-- ☕️ **Minimalist Menu Bar App**: Sits discreetly in your macOS top menu bar with an optional real-time `BT / ET` temperature readout (e.g. `162° / 183°`).
-- 🖥️ **Modern Control Popover**: Click the menu bar flame icon to view all 4 temperature channels (BT, ET, Inlet, Exhaust), Artisan polling state, and network status at a glance.
-- 🌐 **Bilingual & Localization Support**: Native English and Simplified Chinese support with automatic macOS system language detection, plus manual language switching in Settings.
-- 🔀 **Built-in TC4 Protocol Emulation**: Automatically creates an in-memory virtual serial port at `/tmp/hb_roaster` adhering to standard Arduino TC4 protocol (`126 ARC_BTET` & `127 ARC_METIT`).
-- 🛡️ **Machine Control & Safety Confirmations**: Control roaster power, heat, fan, and agitation directly from the popover with confirmation guards to prevent bean scorching.
+- ☕️ **Minimalist Menu Bar / Tray App**: Sits discreetly in your macOS top menu bar or Windows system tray with live `BT / ET` temperature readouts.
+- 🖥️ **Modern Control Panel**: Displays all 4 temperature channels (BT, ET, Inlet, Exhaust), Artisan polling state, and network status at a glance.
+- 🌐 **Bilingual & Localization Support**: Native English and Simplified Chinese support with automatic OS language detection and manual switching.
+- ⚡ **Dual Artisan Connect Modes**:
+  - **Zero-Driver WebSocket Mode (Recommended)**: Connect Artisan directly to `ws://127.0.0.1:8088/ws` without any virtual COM port driver!
+  - **Virtual Serial Port Mode**: Emulates Arduino TC4 (`126 ARC_BTET` & `127 ARC_METIT`) via PTY (macOS) or com0com (Windows).
+- 🛡️ **Machine Control & Safety Confirmations**: Control roaster power, heat, fan, and agitation with confirmation guards to prevent bean scorching.
 - 🔄 **Auto-Discovery & Reconnect**: Built-in UDP 17888 network broadcast discovery with direct physical network interface binding (VPN/proxy-immune) and candidate IP memory.
-- 🚀 **Launch at Login**: Enable `SMAppService` background launch at login via Settings.
-- 🪶 **Native & Lightweight**: Built with 100% native Swift & SwiftUI, requiring no Python or external dependencies, with < 25 MB RAM usage and ~1 MB bundle size.
+- 🚀 **Launch at Login**: Automatic background startup on Windows & macOS.
+- 🪶 **Native & Lightweight**: Standalone execution without requiring pre-installed Python.
 
 ---
 
@@ -93,30 +100,27 @@ Eliminate physical USB serial cables! 100% compatible with your existing Artisan
 
 ---
 
-## ❓ FAQ
+## 💻 Optional Python CLI Mode
 
-<details>
-<summary><b>1. App says "Disconnected" or cannot discover roaster?</b></summary>
+In addition to the native macOS App, the repository also includes a Python CLI implementation for headless or command-line environments:
 
-- **Power**: Verify the roaster is switched on and the Wi-Fi symbol is solid.
-- **Same Network**: Verify both your Mac and the roaster are on the same local Wi-Fi router.
-- **VPN / Proxy Conflict**: If running Clash, Surge, or Loon, set it to Direct mode, or manually enter the roaster's IP (e.g., `192.168.88.88`) in App Settings.
-</details>
+```bash
+# Run CLI in foreground
+python3 main.py --ip 192.168.88.88
 
-<details>
-<summary><b>2. Artisan ON button gives "Serial Exception: Unable to open serial port"?</b></summary>
+# Or manage as a macOS launchd user service
+./service.sh install
+```
 
-- Verify **HB Roaster Wireless Bridge.app** is running (the virtual port exists while the app is active).
-- Verify the Comm Port is set to exactly `/tmp/hb_roaster` with no trailing spaces.
-</details>
+---
 
-<details>
-<summary><b>3. How to switch language or enable launch at login?</b></summary>
+## 🔍 Diagnostics
 
-Click the menu bar flame icon -> click the ⚙️ gear icon:
-- **Language**: Choose between System Default, English, or 简体中文.
-- **Launch at Login**: Check "Start bridge automatically at login".
-</details>
+If Artisan is not showing readings or cannot find the machine:
+```bash
+python3 diagnose.py
+```
+Or directly click the **⚙️ Gear icon -> Run Quick Test** inside the macOS Menu Bar popover.
 
 ---
 
